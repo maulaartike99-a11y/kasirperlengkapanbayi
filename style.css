@@ -1,0 +1,140 @@
+:root {
+  --baby: #f48fb1;
+  --baby-dark: #e56a99;
+  --baby-soft: #fff0f5;
+}
+
+body {
+  background: #fdf6f9;
+}
+
+.bg-baby {
+  background: linear-gradient(90deg, var(--baby), #b39ddb);
+}
+
+.text-baby {
+  color: var(--baby-dark);
+}
+
+.btn-baby {
+  background: var(--baby);
+  border-color: var(--baby);
+  color: #fff;
+}
+
+.btn-baby:hover,
+.btn-baby:focus {
+  background: var(--baby-dark);
+  border-color: var(--baby-dark);
+  color: #fff;
+}
+
+/* Kategori */
+.chip {
+  border: 1px solid var(--baby);
+  background: #fff;
+  color: var(--baby-dark);
+  border-radius: 50rem;
+  padding: 4px 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.chip:hover,
+.chip.active {
+  background: var(--baby);
+  color: #fff;
+}
+
+/* Kartu produk */
+.produk-card {
+  cursor: pointer;
+  border: 0;
+  border-radius: 1rem;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.produk-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(244, 143, 177, 0.35) !important;
+}
+
+.produk-card.habis {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.produk-ikon {
+  font-size: 2.8rem;
+  line-height: 1;
+  background: var(--baby-soft);
+  border-radius: 0.8rem;
+  padding: 14px 0;
+}
+
+.produk-nama {
+  font-size: 0.92rem;
+  font-weight: 600;
+  min-height: 2.4em;
+}
+
+/* Keranjang */
+.cart-card {
+  top: 12px;
+  border-radius: 1rem;
+}
+
+.cart-items {
+  max-height: 42vh;
+  overflow-y: auto;
+}
+
+.cart-item {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f1e3e9;
+}
+
+.qty-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  line-height: 1;
+}
+
+/* Struk */
+.struk {
+  font-family: "Courier New", monospace;
+  font-size: 0.82rem;
+  color: #000;
+}
+
+.struk .garis {
+  border-top: 1px dashed #000;
+  margin: 6px 0;
+}
+
+.struk .baris {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* Cetak: hanya struk yang tampil */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #struk,
+  #struk * {
+    visibility: visible;
+  }
+
+  #struk {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}

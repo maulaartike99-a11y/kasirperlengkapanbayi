@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kasir Toko Perlengkapan Bayi</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand navbar-dark bg-baby shadow-sm">
+    <div class="container-fluid">
+      <span class="navbar-brand fw-bold"><i class="bi bi-balloon-heart-fill me-2"></i>Baby Kasir</span>
+      <div class="d-flex gap-2">
+        <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalProduk">
+          <i class="bi bi-plus-circle"></i> <span class="d-none d-md-inline">Tambah Produk</span>
+        </button>
+        <button class="btn btn-light btn-sm" id="btnRiwayat">
+          <i class="bi bi-clock-history"></i> <span class="d-none d-md-inline">Riwayat</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid py-3">
+    <div class="row g-3">
+
+      <!-- DAFTAR PRODUK -->
+      <div class="col-lg-8">
+        <div class="input-group mb-3 shadow-sm">
+          <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+          <input type="text" id="cari" class="form-control" placeholder="Cari produk...">
+        </div>
+
+        <div id="kategori" class="d-flex flex-wrap gap-2 mb-3"></div>
+
+        <div id="daftarProduk" class="row g-3"></div>
+      </div>
+
+      <!-- KERANJANG -->
+      <div class="col-lg-4">
+        <div class="card shadow-sm sticky-lg-top cart-card">
+          <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="bi bi-cart3 me-2"></i>Keranjang</h5>
+            <button class="btn btn-outline-danger btn-sm" id="btnKosongkan">
+              <i class="bi bi-trash"></i> Kosongkan
+            </button>
+          </div>
+
+          <div class="card-body p-0">
+            <div id="isiKeranjang" class="cart-items"></div>
+          </div>
+
+          <div class="card-footer bg-white">
+            <div class="d-flex justify-content-between mb-1">
+              <span>Subtotal</span><span id="subtotal">Rp 0</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span>Diskon (%)</span>
+              <input type="number" id="diskon" class="form-control form-control-sm text-end" style="width:80px" min="0" max="100" value="0">
+            </div>
+            <div class="d-flex justify-content-between mb-1 text-danger">
+              <span>Potongan</span><span id="potongan">- Rp 0</span>
+            </div>
+            <hr class="my-2">
+            <div class="d-flex justify-content-between fs-5 fw-bold mb-3">
+              <span>Total</span><span id="total" class="text-baby">Rp 0</span>
+            </div>
+            <button class="btn btn-baby w-100 btn-lg" id="btnBayar">
+              <i class="bi bi-cash-coin me-1"></i> Bayar
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL PEMBAYARAN (TUNAI SAJA) -->
+  <div class="modal fade" id="modalBayar" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Pembayaran Tunai</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <small class="text-muted">Total Tagihan</small>
+            <div class="fs-2 fw-bold text-baby" id="bayarTotal">Rp 0</div>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label" for="uangDiterima">Uang Diterima (Tunai)</label>
+            <input type="number" id="uangDiterima" class="form-control form-control-lg" min="0" autofocus>
+          </div>
+
+          <div id="uangCepat" class="d-flex flex-wrap gap-2 mb-3"></div>
+
+          <div class="d-flex justify-content-between fs-5">
+            <span>Kembalian</span>
+            <strong id="kembalian">Rp 0</strong>
+          </div>
+          <div id="pesanBayar" class="text-danger small mt-2"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button class="btn btn-baby" id="btnProses"><i class="bi bi-check2-circle"></i> Proses</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL STRUK -->
+  <div class="modal fade" id="modalStruk" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Struk Pembelian</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div id="struk" class="struk"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          <button class="btn btn-outline-danger" id="btnPdf"><i class="bi bi-file-earmark-pdf"></i> Simpan PDF</button>
+          <button class="btn btn-baby" id="btnCetak"><i class="bi bi-printer"></i> Cetak</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL RIWAYAT -->
+  <div class="modal fade" id="modalRiwayat" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Riwayat Transaksi</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info d-flex justify-content-between mb-3">
+            <span>Total penjualan: <strong id="totalPenjualan">Rp 0</strong></span>
+            <span><strong id="jumlahTrx">0</strong> transaksi</span>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr><th>No. Transaksi</th><th>Waktu</th><th class="text-end">Total</th><th></th></tr>
+              </thead>
+              <tbody id="tabelRiwayat"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-danger me-auto" id="btnResetData">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset Semua Data
+          </button>
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL TAMBAH PRODUK -->
+  <div class="modal fade" id="modalProduk" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <form class="modal-content" id="formProduk">
+        <div class="modal-header">
+          <h5 class="modal-title">Tambah Produk</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Nama Produk</label>
+            <input type="text" id="pNama" class="form-control" required>
+          </div>
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Kategori</label>
+              <select id="pKategori" class="form-select">
+                <option>Pakaian</option>
+                <option>Popok</option>
+                <option>Susu &amp; Makanan</option>
+                <option>Mandi &amp; Perawatan</option>
+                <option>Botol &amp; Dot</option>
+                <option>Perlengkapan Tidur</option>
+                <option>Mainan</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label class="form-label">Harga (Rp)</label>
+              <input type="number" id="pHarga" class="form-control" min="0" required>
+            </div>
+            <div class="col-6">
+              <label class="form-label">Stok</label>
+              <input type="number" id="pStok" class="form-control" min="0" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-baby">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="toast" class="toast align-items-center text-bg-dark border-0" role="alert">
+      <div class="d-flex">
+        <div class="toast-body" id="toastPesan"></div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
